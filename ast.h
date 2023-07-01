@@ -1,3 +1,8 @@
+#define CMD 0
+#define PLINE 1
+#define WORD 2
+#define REDI 3
+
 typedef struct s_exp
 {
 	char	*arg;
@@ -19,9 +24,10 @@ typedef struct s_redi
 
 typedef struct s_suff
 {
-	void	*prev;
-	void	*now;
-	void	*next;
+	int				type;
+	struct s_suff	*prev;
+	void			*now;
+	struct s_suff	*next;
 }	t_suff;
 
 typedef struct s_cmd
@@ -37,83 +43,76 @@ typedef struct s_pline
 	t_cmd	*next;
 }	t_pline;
 
-typedef struct s_script
-{
-	void	*prev;
-	void	*now;
-	void	*next;
-}	t_script;
-
 /*
-jsh> echo -n "$USER" > zzz
-name (echo)
-suffix (-n, $USER, > zzz)
 
-script->prev : NULL
-script->now : cmd
-script->next : NULL
+경우 1 : pipeline 없음
+ex) echo $USER > zzz; cat zzz
+name : echo
+suff : 	$USER
+		> zzz;
+		cat
+		zzz
 
-cmd->name->text : "echo"
+실행부((void *)cmd, CMD);
 
-cmd->suffix->prev : NULL
-cmd->suffix->now : (word)
-		word->text : "-n"
-		word->exp : NULL
+t_cmd	*cmd			cmd->name->text : "echo"
+{						cmd->name->exp : NULL
+	t_word *name;		
+	t_suff *suffix;		
+}
 
-cmd->suffix->next : (word)
-		word->text : "$USER"
-		word->exp : (exp)
-				exp->arg : "USER"
-				exp->start : 1
-				exp->end : 5
-
-cmd->suffix->next->next : (redi)
-				redi->op : ">"
-				redi->file : "zzz"
+t_suff	*suffix					cmd->suffix->type : WORD
+{								cmd->suffix->prev : NULL
+	int				type;		cmd->suffix->now->text : "$USER"
+	struct s_suff	*prev;		cmd->suffix->now->exp : {arg:"USER", start:1, end:5}
+	void			*now;		
+	struct s_suff	*next;		cmd->suffix->next->type : REDI
+}								cmd->suffix->next->prev : cmd->suffix
+								cmd->suffix->next->now->op : ">"
+								cmd->suffix->next->now->file : "zzz;"
+								
+								cmd->suffix->next->next->type : WORD
+								cmd->suffix->next->next->prev : cmd->suffix->next
+								cmd->suffix->next->next->now->text : "cat"
+								cmd->suffix->next->next->now->exp : NULL
+								
+								cmd->suffix->next->next->next->type : WORD
+								cmd->suffix->next->next->next->prev : cmd->suffix->next->next
+								cmd->suffix->next->next->next->now->text : "zzz"
+								cmd->suffix->next->next->next->now->exp : NULL
+								cmd->suffix->next->next->next->next : NULL
 
 ----------
-jsh> cat zzz | rev | ls -l -a -m -p
-name (cat)
-suffix (zzz)
-name (rev)
-suffix ()
-name (ls)
-suffix(-l, -a, -m, -p)
+경우 2 : pipeline 있음
+ex) echo $USER | rev | cat > zzz
+name : echo
+suff : 	$USER
 
-script->prev : NULL
-script->now : pline
-script->now : NULL
+name : rev
+suff :
 
-pline->prev : NULL
-pline->now : cmd1
-pline->next : cmd2
-pline->next->next : cmd3
+name : cat
+suff : 	{>, zzz}
 
-cmd1->name->text : "cat"
-cmd1->suffix->prev : NULL
-cmd1->suffix->now : (word)
-		word->text : "zzz"
-		word->exp : NULL
-cmd1->suffix->next : NULL
+실행부((void *)pline, PLINE);
 
-cmd2->name->text : "rev"
-cmd2->suffix->prev : NULL
-cmd2->suffix->now : NULL
-cmd2->suffix->next : NULL
+t_pline	*pline			pline->prev : NULL
+{						pline->now->name->text : "echo"
+	t_cmd	*prev;		pline->now->name->exp : NULL
+	t_cmd	*now;		pline->now->suffix->type : WORD
+	t_cmd	*next;		pline->now->suffix->prev : NULL
+}						pline->now->suffix->now->text : "$USER"
+						pline->now->suffix->now->exp : {arg:"USER", start:1, end:5}
 
-cmd3->name->text : "ls"
-cmd3->suffix->prev : NULL
-cmd3->suffix->now : (word)
-		word->text : "-l"
-		word->exp : NULL
-cmd3->suffix->next : (word)
-		word->text : "-a"
-		word->exp : NULL
-cmd3->suffix->next->next : (word)
-		word->text : "-m"
-		word->exp : NULL
-cmd3->suffix->next->next->next : (word)
-		word->text : "-p"
-		word->exp : NULL
+						pline->next->name->text : "rev"
+						pline->next->name->exp : NULL
+						pline->next->suffix : NULL
+
+						pline->next->next->name->text : "cat"
+						pline->next->next->name->exp : NULL
+						pline->next->next->suffix->type : REDI
+						pline->next->next->suffix->prev : NULL
+						pline->next->next->suffix->now->op : ">"
+						pline->next->next->suffix->now->file : "zzz;"
 
 */
