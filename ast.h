@@ -4,7 +4,10 @@
 #define REDI 3
 
 #include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+# include <readline/readline.h>
 
 typedef struct s_exp
 {
@@ -29,7 +32,8 @@ typedef struct s_suff
 {
 	int				type;
 	struct s_suff	*prev;
-	void			*now;
+	t_word			*word;
+	t_redi			*redi;
 	struct s_suff	*next;
 }	t_suff;
 
@@ -48,8 +52,6 @@ typedef struct s_pline
 	t_cmd	*next;
 }	t_pline;
 
-static int	ft_word_cnt(const char *str, char c);
-static char	*ft_word_check(const char **str, char c);
 char		**ft_split(const char *str, char c);
 char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);

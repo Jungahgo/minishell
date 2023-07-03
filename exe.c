@@ -54,11 +54,11 @@ char **get_command_list(t_cmd *cmd)
     answer[0] = cmd->name->text;
     answer[cmd->w_size + 1] = NULL;
     i = 1;
-    while (suffix == NULL)
+    while (suffix)
     {
         if (suffix->type == 2)
         {
-            word = (t_word *)suffix->now;
+            word = suffix->word;
             answer[i] = word->text;
             i += 1;
         }
@@ -67,28 +67,104 @@ char **get_command_list(t_cmd *cmd)
     return (answer);
 }
 
-void cmd_exe(void *list, char **envp)
+void redirect_exe()
+{
+
+}
+
+void	free_char_list(char **list)
+{
+	int	i;
+
+	i = 0;
+	while (list[i])
+	{
+		free(list[i]);
+		i++;
+	}
+    free(list);
+}
+
+void	print_char_list(char **list)
+{
+	int	i;
+
+	i = 0;
+	while (list[i])
+	{
+		printf("%s\n",list[i]);
+		i++;
+	}
+	free(list);
+}
+
+pid_t cmd_exe(void *list, char **envp)
 {
     t_cmd   *cmd;
-    char    **command;
+    char    **cmd_list;
     char    **path_list;
+    pid_t   pid;
 
     cmd = (t_cmd *)list;
-    command = get_command_list(cmd);
+    cmd_list = get_command_list(cmd);
     path_list = find_path(envp);
-    if (execve(find_file(path_list, command[0]), command, envp) == -1)
-         exit(1);
+    pid = fork();
+    if (pid < 0)
+        exit(1);
+        //fork error
+    if (pid == 0)
+    {
+        printf("pid == 0\n");
+        if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
+            exit(1);
+    }
+    //free_char_list(cmd_list);
+    //free_char_list(path_list);
+    return (pid);
 }
 
 void exe(void *list, int type, char **envp)
 {
+    pid_t   pid;
+    int     status;
+
     if (type == 0)
     {
         //cmd
-        cmd_exe(list, envp);
+        pid = cmd_exe(list, envp);
+        waitpid(pid, &status, 0);
     }
     else if (type == 1)
     {
         //pipeline
     }
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	*temp;
+	t_cmd	*parsed;
+    
+    argc = 1;
+    argv = NULL;
+	parsed = (t_cmd *)malloc(sizeof(t_cmd));
+	parsed->w_size = 1;
+	parsed->r_size = 0;
+	parsed->name = (t_word *)malloc(sizeof(t_word));
+	parsed->name->text = "echo";
+	parsed->suffix = (t_suff *)malloc(sizeof(t_suff));
+	parsed->suffix->type = WORD;
+	parsed->suffix->prev = NULL;
+    parsed->suffix->redi = NULL;
+	parsed->suffix->word = (t_word *)malloc(sizeof(t_word));
+	parsed->suffix->word->text = "hello";
+	parsed->suffix->next = NULL;
+
+	while (true)
+	{
+		temp = readline("jsh> ");
+		exe((void *)parsed, CMD, envp);
+		//free(temp);
+	}
+	return (EXIT_SUCCESS);
 }

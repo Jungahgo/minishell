@@ -1,8 +1,8 @@
-CC = CC
-CPPFLAGS = -Wall -Wextra -Werror
+CC = cc
+CPPFLAGS = -Wall -Wextra -Werror -lreadline
 NAME = minishell
 HEADER = ast.h
-
+MAKE = make
 OBJS = $(SRCS:.c=.o)
 SRCS = exe.c utils.c
 
