@@ -3,6 +3,9 @@
 #define WORD 2
 #define REDI 3
 
+#include <unistd.h>
+#include <stdlib.h>
+
 typedef struct s_exp
 {
 	char	*arg;
@@ -32,6 +35,8 @@ typedef struct s_suff
 
 typedef struct s_cmd
 {
+	int				w_size;
+	int				r_size;
 	t_word	*name;
 	t_suff	*suffix;
 }			t_cmd;
@@ -42,6 +47,15 @@ typedef struct s_pline
 	t_cmd	*now;
 	t_cmd	*next;
 }	t_pline;
+
+static int	ft_word_cnt(const char *str, char c);
+static char	*ft_word_check(const char **str, char c);
+char		**ft_split(const char *str, char c);
+char		*ft_strjoin(char *s1, char *s2);
+char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
+size_t		ft_strlen(const char *s);
+char		*ft_strdup_size(char *s1, int limit_size, int start);
+char		*ft_strdup(const char *s1);
 
 /*
 
