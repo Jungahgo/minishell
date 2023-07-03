@@ -3,17 +3,9 @@
 #define WORD 2
 #define REDI 3
 
-typedef struct s_exp
-{
-	char	*arg;
-	int		start;
-	int		end;
-}			t_exp;
-
 typedef struct s_word
 {
 	char	*text;
-	t_exp	*exp;
 }			t_word;
 
 typedef struct s_redi
@@ -32,6 +24,8 @@ typedef struct s_suff
 
 typedef struct s_cmd
 {
+	int		w_size;
+	int		r_size;
 	t_word	*name;
 	t_suff	*suffix;
 }			t_cmd;
