@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 void	print_cmd(void *p);
 

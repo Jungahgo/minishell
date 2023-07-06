@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 char **find_path(char **envp)
 {

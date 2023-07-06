@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 static int	ft_word_cnt(const char *str, char c)
 {

@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 t_suff	*suffix_in_quote(t_cmd *cmd, char *in)
 {

@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 void	*parsing_input(int type, char **in, char **env)
 {

@@ -1,25 +1,28 @@
 CC = cc
-CPPFLAGS = -Wall -Wextra -Werror -lreadline
+CPPFLAGS = -Wall -Wextra -Werror
 NAME = minishell
-HEADER = ast.h
+HEADER = ../ast.h
 MAKE = make
 OBJS = $(SRCS:.c=.o)
-SRCS = exe.c utils.c
+SRCS = source/exe.c source/utils.c source/ast_utils.c source/parsing_util.c source/parsing.c \
+		source/split.c source/main.c
 
-.PONY = all
 all : $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(OBJS) $(HEADER)
+	$(CC) $(CPPFLAGS) $(OBJS) -o $(NAME) -lreadline
 
-.PONY = clean
+%.o : %.c
+	$(CC) $(CPPFLAGS) -c $< -o $@
+
 clean :
 	rm -f $(OBJS)
 
-.PONY = fclean
 fclean : clean
 	rm -f $(NAME)
 
-.PONY = re
 re :
 	$(MAKE) fclean
 	$(MAKE) all
+
+.PONY = all clean fclean re

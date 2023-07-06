@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 int	is_sep(char n)
 {

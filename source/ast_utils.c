@@ -1,4 +1,4 @@
-#include "ast.h"
+#include "../ast.h"
 
 t_word	*new_word(char	*text)
 {
