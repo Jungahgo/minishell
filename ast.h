@@ -1,7 +1,15 @@
-#define CMD 0
-#define PLINE 1
-#define WORD 2
-#define REDI 3
+#ifndef AST_H
+# define AST_H
+
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+
+# define CMD 0
+# define PLINE 1
+# define WORD 2
+# define REDI 3
 
 typedef struct s_word
 {
@@ -17,8 +25,9 @@ typedef struct s_redi
 typedef struct s_suff
 {
 	int				type;
+	t_word			*word;
+	t_redi			*redi;
 	struct s_suff	*prev;
-	void			*now;
 	struct s_suff	*next;
 }	t_suff;
 
@@ -36,6 +45,29 @@ typedef struct s_pline
 	t_cmd	*now;
 	t_cmd	*next;
 }	t_pline;
+
+t_word	*new_word(char	*text);
+t_redi	*new_redi(char *op, char *file);
+t_suff	*new_suff(int type, char *text, char *op, char *file);
+t_cmd	*new_cmd(void);
+
+void	perror_n_exit(char *s, int status);
+int		is_pipe_included(char *in);
+
+void	*parsing_input(int type, char **in, char **env);
+t_cmd	*make_cmd(char **in, char **env);
+void	make_suffix(t_cmd *cmd, int idx, char **in);
+
+t_suff	*suffix_in_quote(t_cmd *cmd, char *in);
+void	remove_quote(char *s);
+
+int		is_sep(char n);
+int		count_word(char *s);
+int		get_word_len(char *s, int *idx);
+char	*init_word(char *s, int *idx);
+char	**split_input(char *s);
+
+#endif
 
 /*
 
