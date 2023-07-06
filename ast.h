@@ -60,6 +60,7 @@ char 		**get_command_list(t_cmd *cmd);
 void		free_char_list(char **list);
 void		print_char_list(char **list);
 pid_t 		cmd_exe(void *list, char **envp);
+void 		exe(void *list, int type, char **envp);
 
 t_word	*new_word(char	*text);
 t_redi	*new_redi(char *op, char *file);

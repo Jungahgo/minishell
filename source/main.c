@@ -17,7 +17,7 @@ int	main(int argc, char **argv, char **env)
 		input = split_input(temp);
 		parsed = parsing_input(type, input, env);
 		
-		//run(TYPE, parsed);
+		exe((void *)parsed, CMD, env);
 
 		print_cmd(parsed);
 		
