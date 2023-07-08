@@ -5,12 +5,14 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
-#include <unistd.h>
+# include <unistd.h>
 
 # define CMD 0
 # define PLINE 1
 # define WORD 2
 # define REDI 3
+# define HERE_DOC 4
+# define ENV 5
 
 typedef struct s_word
 {

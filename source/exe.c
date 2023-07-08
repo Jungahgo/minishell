@@ -138,6 +138,10 @@ void exe(void *list, int type, char **envp)
     {
         //pipeline
     }
+    else if (type == 2)
+    {
+        
+    }
 }
 
 /*
