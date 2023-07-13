@@ -115,8 +115,9 @@ pid_t cmd_exe(void *list, char **envp)
     if (pid == 0)
     {
         printf("pid == 0\n");
-        if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
-            exit(1);
+        // if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
+        //     exit(1);
+        echo(cmd_list, 1);
     }
     //free_char_list(cmd_list);
     //free_char_list(path_list);
