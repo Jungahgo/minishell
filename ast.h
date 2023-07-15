@@ -52,8 +52,10 @@ char		**ft_split(const char *str, char c);
 char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlen(const char *s);
+int			ft_listlen(char **list);
 char		*ft_strdup_size(char *s1, int limit_size, int start);
 char		*ft_strdup(const char *s1);
+int			ft_strcmp(const char *s1, const char *s2);
 
 char 		**find_path(char **envp);
 char 		*find_file(char **path_list, char *command);
@@ -85,6 +87,14 @@ int		count_word(char *s);
 int		get_word_len(char *s, int *idx);
 char	*init_word(char *s, int *idx);
 char	**split_input(char *s);
+
+void 	bi_echo(char **cmd_list, int outfile);
+void 	bi_cd(char **cmd_list, int outfile);
+void 	bi_pwd(char **cmd_list, int outfile);
+void 	bi_env(char **cmd_list, int outfile);
+void 	bi_exit(char **cmd_list, int outfile);
+char 	**bi_export(char **envp, char **cmd_list, int outfile);
+char 	**bi_unset(char **envp, char **cmd_list, int outfile);
 #endif
 /*
 
