@@ -39,18 +39,35 @@ void bi_pwd(char **cmd_list, int outfile)
     write(outfile, buf, BUFFER_SIZE);
 }
 
-void bi_export(char **envp, char **cmd_list, int outfile)
+char **bi_export(char **envp, char **cmd_list, int outfile)
 {
+    int     i;
+
     if (cmd_list[1] == NULL)
-    {
         print_char_list(envp);
+    else
+    {
+        i = 1;
+        while (cmd_list[i])
+        {
+            envp = append_char_list(envp, cmd_list[i]);
+            i += 1;
+        }
     }
-    
+    return (envp);
 }
 
-void bi_unset(char **cmd_list, int outfile)
+char **bi_unset(char **envp, char **cmd_list, int outfile)
 {
+    int i;
 
+    i = 1;
+    while (cmd_list[i])
+    {
+        envp = delete_char_list(envp, cmd_list[i]);
+        i += 1;
+    }
+    return (envp);
 }
 
 void bi_env(char **cmd_list, int outfile)
