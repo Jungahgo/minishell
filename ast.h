@@ -12,7 +12,9 @@
 # define WORD 2
 # define REDI 3
 # define HERE_DOC 4
-# define ENV 5
+
+# define DUP2_ERROR "DUP2 ERROR"
+# define EXECVE_ERROR "EXECVE ERROR"
 
 typedef struct s_word
 {
@@ -38,15 +40,17 @@ typedef struct s_cmd
 {
 	int		w_size;
 	int		r_size;
+	int		index;
 	t_word	*name;
 	t_suff	*suffix;
+	t_cmd	*prev;
+	t_cmd	*next;
 }			t_cmd;
 
 typedef struct s_pline
 {
-	t_cmd	*prev;
+	int		size;
 	t_cmd	*now;
-	t_cmd	*next;
 }	t_pline;
 
 char		**ft_split(const char *str, char c);
@@ -64,26 +68,31 @@ void		print_char_list(char **list);
 pid_t 		cmd_exe(void *list, char **envp);
 void 		exe(void *list, int type, char **envp);
 
-t_word	*new_word(char	*text);
-t_redi	*new_redi(char *op, char *file);
-t_suff	*new_suff(int type, char *text, char *op, char *file);
-t_cmd	*new_cmd(void);
+void		free_char_list(char **list);
 
-void	perror_n_exit(char *s, int status);
-int		is_pipe_included(char *in);
+void		print_char_list(char **list);
+void		print_cmd(void *p)
 
-void	*parsing_input(int type, char **in, char **env);
-t_cmd	*make_cmd(char **in, char **env);
-void	make_suffix(t_cmd *cmd, int idx, char **in);
+t_word		*new_word(char	*text);
+t_redi		*new_redi(char *op, char *file);
+t_suff		*new_suff(int type, char *text, char *op, char *file);
+t_cmd		*new_cmd(void);
 
-t_suff	*suffix_in_quote(t_cmd *cmd, char *in);
-void	remove_quote(char *s);
+void		perror_n_exit(char *s, int status);
+int			is_pipe_included(char *in);
 
-int		is_sep(char n);
-int		count_word(char *s);
-int		get_word_len(char *s, int *idx);
-char	*init_word(char *s, int *idx);
-char	**split_input(char *s);
+void		*parsing_input(int type, char **in, char **env);
+t_cmd		*make_cmd(char **in, char **env);
+void		make_suffix(t_cmd *cmd, int idx, char **in);
+
+t_suff		*suffix_in_quote(t_cmd *cmd, char *in);
+void		remove_quote(char *s);
+
+int			is_sep(char n);
+int			count_word(char *s);
+int			get_word_len(char *s, int *idx);
+char		*init_word(char *s, int *idx);
+char		**split_input(char *s);
 #endif
 /*
 
@@ -155,6 +164,6 @@ t_pline	*pline			pline->prev : NULL
 						pline->next->next->suffix->type : REDI
 						pline->next->next->suffix->prev : NULL
 						pline->next->next->suffix->now->op : ">"
-						pline->next->next->suffix->now->file : "zzz;"
+						pline->next->next->suffix->now->file : "zzz"
 
 */
