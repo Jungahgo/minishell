@@ -41,6 +41,10 @@ void bi_pwd(char **cmd_list, int outfile)
 
 void bi_export(char **envp, char **cmd_list, int outfile)
 {
+    if (cmd_list[1] == NULL)
+    {
+        print_char_list(envp);
+    }
     
 }
 
