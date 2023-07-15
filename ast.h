@@ -5,7 +5,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
-#include <unistd.h>
+# include <unistd.h>
+# include <dirent.h>
 
 # define CMD 0
 # define PLINE 1
