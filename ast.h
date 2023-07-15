@@ -13,6 +13,8 @@
 # define WORD 2
 # define REDI 3
 
+# define BUFFER_SIZE 225
+
 typedef struct s_word
 {
 	char	*text;
@@ -56,6 +58,9 @@ int			ft_listlen(char **list);
 char		*ft_strdup_size(char *s1, int limit_size, int start);
 char		*ft_strdup(const char *s1);
 int			ft_strcmp(const char *s1, const char *s2);
+
+char **delete_char_list(char **list, char *value);
+char **append_char_list(char **list, char *value);
 
 char 		**find_path(char **envp);
 char 		*find_file(char **path_list, char *command);

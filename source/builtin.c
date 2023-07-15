@@ -11,6 +11,7 @@ void bi_echo(char **cmd_list, int outfile)
         write(outfile, cmd_list[i], ft_strlen(cmd_list[i]));
         i += 1;
     }
+    printf("===>\n");
     write(outfile, "\n", 1);
 }
 
@@ -75,13 +76,13 @@ void bi_env(char **cmd_list, int outfile)
     char *env;
 
     env = getenv(cmd_list[1]);
-    if (env == NULL)
-    {
-        //환경변수 없는 경우
-    }
-    else
-        //execve
-        //write(outfile, env, ft_strlen(env));
+    // if (env == NULL)
+    // {
+    //     //환경변수 없는 경우
+    // }
+    // else
+    //     //execve
+    //     //write(outfile, env, ft_strlen(env));
 }
 
 void bi_exit(char **cmd_list, int outfile)

@@ -52,7 +52,7 @@ char **get_command_list(t_cmd *cmd)
     suffix = cmd->suffix;
     answer = (char **)malloc(sizeof(char *) * (cmd->w_size + 2));
     answer[0] = cmd->name->text;
-    answer[cmd->w_size + 1] = NULL;
+    answer[cmd->w_size + 1] = 'NULL';
     i = 1;
     while (suffix)
     {
@@ -108,17 +108,23 @@ pid_t cmd_exe(void *list, char **envp)
     cmd = (t_cmd *)list;
     cmd_list = get_command_list(cmd);
     path_list = find_path(envp);
-    pid = fork();
-    if (pid < 0)
-        exit(1);
-        //fork error
-    if (pid == 0)
-    {
-        printf("pid == 0\n");
-        // if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
-        //     exit(1);
-        echo(cmd_list, 1);
-    }
+    pid = NULL;
+    bi_echo(cmd_list, 1);
+    // pid = fork();
+    // if (pid < 0)
+    //     exit(1);
+    //     //fork error
+    // if (pid == 0)
+    // {
+    //     printf("pid == 0\n");
+    //     // if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
+    //     //     exit(1);
+    //     printf("before builtin functions\n");
+    //     bi_echo(cmd_list, 1);
+    //     printf("after builtin functions\n");
+    //     //else if (ft_strcmp(cmd_list[0], "cd"))
+    //     //    bi_
+    // }
     //free_char_list(cmd_list);
     //free_char_list(path_list);
     return (pid);
@@ -133,7 +139,7 @@ void exe(void *list, int type, char **envp)
     {
         //cmd
         pid = cmd_exe(list, envp);
-        waitpid(pid, &status, 0);
+        //waitpid(pid, &status, 0);
     }
     else if (type == 1)
     {
