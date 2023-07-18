@@ -3,16 +3,24 @@
 void bi_echo(char **cmd_list, int outfile)
 {
     int i;
+    int newline;
 
     i = 1;
+    if (cmd_list[i] == "n")
+    {
+        i += 1;
+        newline = 0;
+    }
+    else
+        new_line = 1;
     //-n option 아직 생각안함
-    while (cmd_list[i])
+    while (cmd_list[i] != NULL)
     {
         write(outfile, cmd_list[i], ft_strlen(cmd_list[i]));
         i += 1;
     }
-    printf("===>\n");
-    write(outfile, "\n", 1);
+    if (newline == 1)
+        write(outfile, "\n", 1);
 }
 
 void bi_cd(char **cmd_list, int outfile)

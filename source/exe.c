@@ -52,9 +52,8 @@ char **get_command_list(t_cmd *cmd)
     suffix = cmd->suffix;
     answer = (char **)malloc(sizeof(char *) * (cmd->w_size + 2));
     answer[0] = cmd->name->text;
-    answer[cmd->w_size + 1] = 'NULL';
     i = 1;
-    while (suffix)
+    while (suffix != NULL)
     {
         if (suffix->type == 2)
         {
@@ -64,6 +63,7 @@ char **get_command_list(t_cmd *cmd)
         }
         suffix = suffix->next;
     }
+    answer[i] = NULL;
     return (answer);
 }
 
@@ -103,13 +103,16 @@ pid_t cmd_exe(void *list, char **envp)
     t_cmd   *cmd;
     char    **cmd_list;
     char    **path_list;
-    pid_t   pid;
 
     cmd = (t_cmd *)list;
     cmd_list = get_command_list(cmd);
+    printf("------\n");
+    printf("%d: %s\n", 0, cmd_list[0]);
+    printf("%d: %s\n", 1, cmd_list[1]);
+    printf("%d: %s\n", 2, cmd_list[2]);
     path_list = find_path(envp);
-    pid = NULL;
     bi_echo(cmd_list, 1);
+    printf("bi_echo\n");
     // pid = fork();
     // if (pid < 0)
     //     exit(1);
@@ -127,18 +130,18 @@ pid_t cmd_exe(void *list, char **envp)
     // }
     //free_char_list(cmd_list);
     //free_char_list(path_list);
-    return (pid);
+    return (NULL);
 }
 
 void exe(void *list, int type, char **envp)
 {
-    pid_t   pid;
     int     status;
 
     if (type == 0)
     {
         //cmd
-        pid = cmd_exe(list, envp);
+        cmd_exe(list, envp);
+        printf("cmd_exe\n");
         //waitpid(pid, &status, 0);
     }
     else if (type == 1)
