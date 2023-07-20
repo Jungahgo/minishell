@@ -211,20 +211,6 @@ char **append_char_list(char **list, char *value)
     return (new_list);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	temp;
-
-	temp = 0;
-	while (s1[temp] || s2[temp])
-	{
-		if ((unsigned char)s1[temp] != (unsigned char)s2[temp])
-			return ((unsigned char)s1[temp] - (unsigned char)s2[temp]);
-		temp += 1;
-	}
-	return (0);
-}
-
 char **delete_char_list(char **list, char *value)
 {
 	int		size;
