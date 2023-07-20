@@ -64,7 +64,6 @@ void 		exe(void *list, int type, char **envp);
 
 void		echo(char **cmd_list, int outfile);
 
-
 t_word	*new_word(char	*text);
 t_redi	*new_redi(char *op, char *file);
 t_suff	*new_suff(int type, char *text, char *op, char *file);

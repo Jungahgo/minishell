@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **env)
 		else
 			print_pline(parsed);
 //*/
-		
+
 		free(temp);
 		//free_(input)
 	}
