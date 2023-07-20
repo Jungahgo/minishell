@@ -67,7 +67,7 @@ char 		*find_file(char **path_list, char *command);
 char 		**get_command_list(t_cmd *cmd);
 void		free_char_list(char **list);
 void		print_char_list(char **list);
-void 		cmd_exe(void *list, char **envp);
+pid_t		cmd_exe(void *list, char **envp);
 void 		exe(void *list, int type, char **envp);
 
 void		echo(char **cmd_list, int outfile);
@@ -107,7 +107,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 void 	bi_echo(char **cmd_list, int outfile);
 void 	bi_cd(char **cmd_list, int outfile);
 void 	bi_pwd(char **cmd_list, int outfile);
-void 	bi_env(char **cmd_list, int outfile);
+void 	bi_env(char **envp,char **cmd_list, int outfile);
 void 	bi_exit(char **cmd_list, int outfile);
 char 	**bi_export(char **envp, char **cmd_list, int outfile);
 char 	**bi_unset(char **envp, char **cmd_list, int outfile);
