@@ -1,6 +1,7 @@
 #include "ast.h"
 
 void	print_cmd(void *p);
+void	print_pline(void *p);
 
 int	main(int argc, char **argv, char **env)
 {
@@ -12,15 +13,18 @@ int	main(int argc, char **argv, char **env)
 	while (true)
 	{
 		temp = readline("jsh> ");
-		type = CMD;
-		//type = is_pipe_included(temp);
 		input = split_input(temp);
+		type = is_pipe_included(input);
 		parsed = parsing_input(type, input, env);
 		
 		exe((void *)parsed, CMD, env);
+///*
+		if (type == CMD)
+			print_cmd(parsed);
+		else
+			print_pline(parsed);
+//*/
 
-		print_cmd(parsed);
-		
 		free(temp);
 		//free_(input)
 	}
@@ -29,24 +33,46 @@ int	main(int argc, char **argv, char **env)
 
 void	perror_n_exit(char *s, int status)
 {
-	perror("s");
+	perror(s);
 	exit(status);
 }
 
-int	is_pipe_included(char *in)
+int	is_pipe_included(char **in)
 {
 	int	i;
 	int	flag;
 
 	flag = CMD;
 	i = 0;
-	while (in[i] && flag != CMD)
+	while (in[i] && flag == CMD)
 	{
-		if (in[i] == '|')
+		if (ft_strcmp(in[i], "|") == 0)
 			flag = PLINE;
 		i++;
 	}
 	return(flag);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t			i;
+	unsigned char	*us1;
+	unsigned char	*us2;
+
+	i = 0;
+	if (!s1 && !s2)
+		return (0);
+	if (!s1 || !s2)
+		return (1);
+	us1 = (unsigned char *)s1;
+	us2 = (unsigned char *)s2;
+	while (us1[i] && us2[i])
+	{
+		if (us1[i] != us2[i])
+			return (us1[i] - us2[i]);
+		i++;
+	}
+	return (us1[i] - us2[i]);
 }
 
 void	print_cmd(void *p)
@@ -71,5 +97,18 @@ void	print_cmd(void *p)
 		printf("cmd suffix prev : %p\n", cur->prev);
 		printf("cmd suffix next : %p\n", cur->next);
 		cur =cur->next;
+	}
+}
+
+void	print_pline(void *p)
+{
+	t_cmd	*cur;
+
+	cur = ((t_pline *)p)->now;
+	while (cur)
+	{
+		print_cmd((void *)cur);
+		cur = cur->next;
+	printf("###############%p\n", cur);
 	}
 }
