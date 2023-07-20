@@ -94,7 +94,7 @@ void bi_env(char **envp, char **cmd_list, int outfile)
             i += 1;
         }
     }
-    env = getenv(cmd_list[1]);
+    //env = getenv(cmd_list[1]);
     // if (env == NULL)
     // {
     //     //환경변수 없는 경우
