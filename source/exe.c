@@ -98,7 +98,7 @@ void	print_char_list(char **list)
 	free(list);
 }
 
-pid_t cmd_exe(void *list, char **envp)
+void cmd_exe(void *list, char **envp)
 {
     t_cmd   *cmd;
     char    **cmd_list;
@@ -106,13 +106,8 @@ pid_t cmd_exe(void *list, char **envp)
 
     cmd = (t_cmd *)list;
     cmd_list = get_command_list(cmd);
-    printf("------\n");
-    printf("%d: %s\n", 0, cmd_list[0]);
-    printf("%d: %s\n", 1, cmd_list[1]);
-    printf("%d: %s\n", 2, cmd_list[2]);
     path_list = find_path(envp);
     bi_echo(cmd_list, 1);
-    printf("bi_echo\n");
     // pid = fork();
     // if (pid < 0)
     //     exit(1);
@@ -130,7 +125,6 @@ pid_t cmd_exe(void *list, char **envp)
     // }
     //free_char_list(cmd_list);
     //free_char_list(path_list);
-    return (NULL);
 }
 
 void exe(void *list, int type, char **envp)

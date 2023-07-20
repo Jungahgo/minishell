@@ -6,13 +6,13 @@ void bi_echo(char **cmd_list, int outfile)
     int newline;
 
     i = 1;
-    if (cmd_list[i] == "n")
+    if (ft_strcmp(cmd_list[i], "-n") == 0)
     {
         i += 1;
         newline = 0;
     }
     else
-        new_line = 1;
+        newline = 1;
     //-n option 아직 생각안함
     while (cmd_list[i] != NULL)
     {

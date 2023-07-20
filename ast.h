@@ -67,7 +67,7 @@ char 		*find_file(char **path_list, char *command);
 char 		**get_command_list(t_cmd *cmd);
 void		free_char_list(char **list);
 void		print_char_list(char **list);
-pid_t 		cmd_exe(void *list, char **envp);
+void 		cmd_exe(void *list, char **envp);
 void 		exe(void *list, int type, char **envp);
 
 void		echo(char **cmd_list, int outfile);
@@ -101,7 +101,6 @@ int		get_word_len(char *s, int *idx);
 char	*init_word(char *s, int *idx);
 char	**split_input(char *s);
 
-int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
