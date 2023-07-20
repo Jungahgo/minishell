@@ -47,6 +47,16 @@ static char	*ft_word_check(const char **str, char c)
 	return (answer);
 }
 
+int		ft_listlen(char **list)
+{
+	int	i;
+	
+	i = 0;
+	while (list[i])
+		i += 1;
+	return (i);
+}
+
 char	**ft_split(const char *str, char c)
 {
 	char	**answer;
@@ -133,6 +143,8 @@ size_t	ft_strlen(const char *s)
 	size_t	size;
 
 	size = 0;
+	if (s == NULL)
+		return (size);
 	while (s[size])
 	{
 		size += 1;
@@ -178,4 +190,57 @@ char	*ft_strdup(const char *s1)
 	}
 	answer[temp] = '\0';
 	return (answer);
+}
+
+char **append_char_list(char **list, char *value)
+{
+    int     size;
+    char    **new_list;
+    int     i;
+
+    size = ft_listlen(list) + 1;
+    new_list = malloc(sizeof(char *) * size);
+    i = 0;
+    while (i < size - 1)
+    {
+        new_list[i] = ft_strdup(list[i]);
+        i += 1;
+    }
+    new_list[i] = ft_strdup(value);
+    free_char_list(list);
+    return (new_list);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	temp;
+
+	temp = 0;
+	while (s1[temp] || s2[temp])
+	{
+		if ((unsigned char)s1[temp] != (unsigned char)s2[temp])
+			return ((unsigned char)s1[temp] - (unsigned char)s2[temp]);
+		temp += 1;
+	}
+	return (0);
+}
+
+char **delete_char_list(char **list, char *value)
+{
+	int		size;
+	char	**new_list;
+	int		i;
+
+	size = ft_listlen(list) - 1;
+	new_list = malloc(sizeof(char *) * size);
+	i = 0;
+	while (i < size)
+	{
+		if (ft_strcmp(list[i], value) == 0)
+			continue;
+		new_list[i] = ft_strdup(list[i]);
+		i += 1;
+	}
+	free_char_list(list);
+	return (new_list);
 }

@@ -4,7 +4,7 @@ NAME = minishell
 HEADER = ast.h
 MAKE = make
 OBJS = $(SRCS:.c=.o)
-SRCS = exe.c utils.c
+SRCS = 
 
 .PONY = all
 all : $(NAME)

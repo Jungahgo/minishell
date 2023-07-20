@@ -6,11 +6,14 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <dirent.h>
 
 # define CMD 0
 # define PLINE 1
 # define WORD 2
 # define REDI 3
+
+# define BUFFER_SIZE 225
 
 typedef struct s_word
 {
@@ -51,8 +54,13 @@ char		**ft_split(const char *str, char c);
 char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 size_t		ft_strlen(const char *s);
+int			ft_listlen(char **list);
 char		*ft_strdup_size(char *s1, int limit_size, int start);
 char		*ft_strdup(const char *s1);
+int			ft_strcmp(const char *s1, const char *s2);
+
+char **delete_char_list(char **list, char *value);
+char **append_char_list(char **list, char *value);
 
 char 		**find_path(char **envp);
 char 		*find_file(char **path_list, char *command);
@@ -96,6 +104,14 @@ char	**split_input(char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+void 	bi_echo(char **cmd_list, int outfile);
+void 	bi_cd(char **cmd_list, int outfile);
+void 	bi_pwd(char **cmd_list, int outfile);
+void 	bi_env(char **cmd_list, int outfile);
+void 	bi_exit(char **cmd_list, int outfile);
+char 	**bi_export(char **envp, char **cmd_list, int outfile);
+char 	**bi_unset(char **envp, char **cmd_list, int outfile);
 
 #endif
 /*
