@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+#include <unistd.h>
 
 # define CMD 0
 # define PLINE 1
@@ -46,6 +47,23 @@ typedef struct s_pline
 	t_cmd	*next;
 }	t_pline;
 
+char		**ft_split(const char *str, char c);
+char		*ft_strjoin(char *s1, char *s2);
+char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
+size_t		ft_strlen(const char *s);
+char		*ft_strdup_size(char *s1, int limit_size, int start);
+char		*ft_strdup(const char *s1);
+
+char 		**find_path(char **envp);
+char 		*find_file(char **path_list, char *command);
+char 		**get_command_list(t_cmd *cmd);
+void		free_char_list(char **list);
+void		print_char_list(char **list);
+pid_t 		cmd_exe(void *list, char **envp);
+void 		exe(void *list, int type, char **envp);
+
+void		echo(char **cmd_list, int outfile);
+
 t_word	*new_word(char	*text);
 t_redi	*new_redi(char *op, char *file);
 t_suff	*new_suff(int type, char *text, char *op, char *file);
@@ -66,9 +84,7 @@ int		count_word(char *s);
 int		get_word_len(char *s, int *idx);
 char	*init_word(char *s, int *idx);
 char	**split_input(char *s);
-
 #endif
-
 /*
 
 경우 1 : pipeline 없음
