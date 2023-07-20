@@ -37,17 +37,17 @@ typedef struct s_suff
 
 typedef struct s_cmd
 {
-	int		w_size;
-	int		r_size;
-	t_word	*name;
-	t_suff	*suffix;
-}			t_cmd;
+	int				w_size;
+	int				r_size;
+	t_word			*name;
+	t_suff			*suffix;
+	struct s_cmd	*next;
+}					t_cmd;
 
 typedef struct s_pline
 {
-	t_cmd	*prev;
+	int		size;
 	t_cmd	*now;
-	t_cmd	*next;
 }	t_pline;
 
 char		**ft_split(const char *str, char c);
@@ -78,20 +78,32 @@ t_suff	*new_suff(int type, char *text, char *op, char *file);
 t_cmd	*new_cmd(void);
 
 void	perror_n_exit(char *s, int status);
-int		is_pipe_included(char *in);
+int		is_pipe_included(char **in);
 
 void	*parsing_input(int type, char **in, char **env);
-t_cmd	*make_cmd(char **in, char **env);
-void	make_suffix(t_cmd *cmd, int idx, char **in);
+t_cmd	*make_cmd(char **in, char **env, int num);
+t_pline	*make_pline(char **in, char **env);
 
-t_suff	*suffix_in_quote(t_cmd *cmd, char *in);
+void	make_suffix(t_cmd *cmd, int idx, char **in);
+int		is_redirection(char *s);
+t_suff	*suffix_in_quote(t_cmd *cmd, char **in);
 void	remove_quote(char *s);
+
+void	change_escape(char *s, int i, int j);
+int		change_escape_util(char src, char *idx);
+int		is_possible_to_env(char c);
+void	replace_env(char **in, int ii, int len);
+void	count_cut_point(char flag, char **in, int *ii, int *len);
 
 int		is_sep(char n);
 int		count_word(char *s);
 int		get_word_len(char *s, int *idx);
 char	*init_word(char *s, int *idx);
 char	**split_input(char *s);
+
+int		ft_strcmp(const char *s1, const char *s2);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 void 	bi_echo(char **cmd_list, int outfile);
 void 	bi_cd(char **cmd_list, int outfile);
@@ -100,6 +112,7 @@ void 	bi_env(char **cmd_list, int outfile);
 void 	bi_exit(char **cmd_list, int outfile);
 char 	**bi_export(char **envp, char **cmd_list, int outfile);
 char 	**bi_unset(char **envp, char **cmd_list, int outfile);
+
 #endif
 /*
 

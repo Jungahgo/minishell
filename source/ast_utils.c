@@ -51,5 +51,6 @@ t_cmd	*new_cmd(void)
 	cmd->r_size = 0;
 	cmd->name = NULL;
 	cmd->suffix = NULL;
+	cmd->next = NULL;
 	return (cmd);
 }
