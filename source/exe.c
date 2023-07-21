@@ -98,45 +98,59 @@ void	print_char_list(char **list)
 	free(list);
 }
 
-void cmd_exe(void *list, char **envp)
+pid_t cmd_exe(void *list, char **envp)
 {
     t_cmd   *cmd;
+    pid_t   pid;
     char    **cmd_list;
     char    **path_list;
+    int     outfile;
 
+    outfile = 1; //임시
     cmd = (t_cmd *)list;
     cmd_list = get_command_list(cmd);
     path_list = find_path(envp);
-    bi_echo(cmd_list, 1);
-    // pid = fork();
-    // if (pid < 0)
-    //     exit(1);
-    //     //fork error
-    // if (pid == 0)
-    // {
-    //     printf("pid == 0\n");
-    //     // if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
-    //     //     exit(1);
-    //     printf("before builtin functions\n");
-    //     bi_echo(cmd_list, 1);
-    //     printf("after builtin functions\n");
-    //     //else if (ft_strcmp(cmd_list[0], "cd"))
-    //     //    bi_
-    // }
-    //free_char_list(cmd_list);
-    //free_char_list(path_list);
+    pid = NULL;
+    printf("cmd: %s\n", cmd_list[0]);
+    if (ft_strcmp(cmd_list[0], "echo") == 0)
+        bi_echo(cmd_list, outfile);
+    else if (ft_strcmp(cmd_list[0], "cd") == 0)
+        bi_cd(cmd_list, outfile);
+    else if (ft_strcmp(cmd_list[0], "pwd") == 0)
+        bi_pwd(cmd_list, outfile);
+    else if (ft_strcmp(cmd_list[0], "export") == 0)
+        bi_export(envp, cmd_list, outfile);
+    else if (ft_strcmp(cmd_list[0], "unset") == 0)
+        bi_unset(envp, cmd_list, outfile);
+    else if (ft_strcmp(cmd_list[0], "env") == 0)
+        bi_env(envp, cmd_list, outfile);
+    else
+    {    
+        pid = fork();
+        if (pid < 0)
+            exit(1);
+        if (pid == 0)
+        {
+            if (execve(find_file(path_list, cmd_list[0]), cmd_list, envp) == -1)
+                exit(1);
+        }
+    }
+    free_char_list(cmd_list);
+    free_char_list(path_list);
+    return (pid);
 }
 
 void exe(void *list, int type, char **envp)
 {
     int     status;
+    pid_t      pid;
 
     if (type == 0)
     {
         //cmd
-        cmd_exe(list, envp);
-        printf("cmd_exe\n");
-        //waitpid(pid, &status, 0);
+        pid = cmd_exe(list, envp);
+        if (pid != NULL)
+            waitpid(pid, &status, 0);
     }
     else if (type == 1)
     {

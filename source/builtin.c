@@ -13,7 +13,6 @@ void bi_echo(char **cmd_list, int outfile)
     }
     else
         newline = 1;
-    //-n option 아직 생각안함
     while (cmd_list[i] != NULL)
     {
         write(outfile, cmd_list[i], ft_strlen(cmd_list[i]));
@@ -42,10 +41,11 @@ void bi_cd(char **cmd_list, int outfile)
 
 void bi_pwd(char **cmd_list, int outfile)
 {
-    char buf[BUFFER_SIZE];
+    char *buf;
     
-    getcwd(buf, BUFFER_SIZE);
+    buf = getcwd(NULL, BUFFER_SIZE);
     write(outfile, buf, BUFFER_SIZE);
+    write(outfile, "\n", 1);
 }
 
 char **bi_export(char **envp, char **cmd_list, int outfile)
@@ -79,18 +79,29 @@ char **bi_unset(char **envp, char **cmd_list, int outfile)
     return (envp);
 }
 
-void bi_env(char **cmd_list, int outfile)
+void bi_env(char **envp, char **cmd_list, int outfile)
 {
     char *env;
+    int     i;
 
-    env = getenv(cmd_list[1]);
+    if (cmd_list[1] == NULL)
+    {
+        i = 0;
+        while (envp[i])
+        {
+            write(outfile, envp[i], ft_strlen(envp[i]));
+            write(outfile, "\n", 1);
+            i += 1;
+        }
+    }
+    //env = getenv(cmd_list[1]);
     // if (env == NULL)
     // {
     //     //환경변수 없는 경우
     // }
     // else
     //     //execve
-    //     //write(outfile, env, ft_strlen(env));
+    write(outfile, env, ft_strlen(env));
 }
 
 void bi_exit(char **cmd_list, int outfile)
